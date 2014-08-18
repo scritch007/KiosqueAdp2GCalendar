@@ -1,4 +1,5 @@
 {
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtgBF3VzvTSRf+MoWOQtSOL2iGr0P6VDXiyI50qm5IDU2VPuyNl4gH4NB/+KvWjI2QWw7eK4W9tbXeq+LOSzZ3OZtONT3TykSbdeZ4xAs4zHcp6o3Yt+uP1l02rbAfbaR+QGqoLv8wU9atNnsq2sfVxvLKVKjNDz1pw2hLTQ14dp9yvv5ZLrOPz09tpW5ONQACF32a/Vj0UlB9lrCfdW3vS+dZI9nb52Tls/n0Ac0GtGPLL+TvY3N0A4kObzzizP70JLgvh1wJK8t9jSFGxKUdBC6DV95huGiQwNK4sHPbSdrfu4msKhHi3Ef9JtFE7F4ZLzEux4QSMRXcSNIwea9ZQIDAQAB",
   "name": "KiosqueADBToCalendar",
   "description": "Converti les demandes de congés ADB en Google Calendar",
   "version": "1.0.3",
@@ -23,6 +24,5 @@
       "https://www.googleapis.com/auth/calendar"
     ]
   },
-  "manifest_version": 2,
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtgBF3VzvTSRf+MoWOQtSOL2iGr0P6VDXiyI50qm5IDU2VPuyNl4gH4NB/+KvWjI2QWw7eK4W9tbXeq+LOSzZ3OZtONT3TykSbdeZ4xAs4zHcp6o3Yt+uP1l02rbAfbaR+QGqoLv8wU9atNnsq2sfVxvLKVKjNDz1pw2hLTQ14dp9yvv5ZLrOPz09tpW5ONQACF32a/Vj0UlB9lrCfdW3vS+dZI9nb52Tls/n0Ac0GtGPLL+TvY3N0A4kObzzizP70JLgvh1wJK8t9jSFGxKUdBC6DV95huGiQwNK4sHPbSdrfu4msKhHi3Ef9JtFE7F4ZLzEux4QSMRXcSNIwea9ZQIDAQAB"
+  "manifest_version": 2
 }
