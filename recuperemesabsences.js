@@ -43,8 +43,11 @@ function ISODateString(d){
 }
 
 function UpdateCalendar(calendar){
-	chrome.extension.sendRequest({"action": "list_events", calendarId:calendar.id}, function(elements){
-		console.log(elements);
+	chrome.extension.sendRequest({"action": "list_events", calendarId:calendar.id, timeMin: ISODateString(new Date()) + "Z"}, function(elements){
+		if (elements.error){
+			toastr.error(elements.error);
+			return;
+		}
 		//Todo check if this event has already been added
 		for (var i = 0; i < absences.length; i++){
 			var absence = absences[i];
@@ -79,17 +82,25 @@ function UpdateCalendar(calendar){
 				description: description
 			}
 			chrome.extension.sendRequest({action: "create_event", event: hEvent, calendarId: calendar.id}, function(element){
+				if (element.error){
+					toastr.error(element.error);
+					return;
+				}
 				toastr.success("Event created " + description);
 			});
 
 		}
 		for (var i=0; i < elements.items.length; i++){
-			var element = elements.items[i]
+			var element = elements.items[i];
 			if(!element.found){
-				if (-1 != element.summary.indexOf("kiosqueAdp2Calendar"))
+				if (element.description && (-1 != element.description.indexOf("kiosqueAdp2Calendar")))
 				{
-					chrome.extension.sendRequest({action:"delete_event", eventId: elements.items[i].id, calendarId: calendar.id}, function(element){
-						toastr.success("Event was removed " + elements.items[i].description);
+					chrome.extension.sendRequest({action:"delete_event", eventId: element.id, calendarId: calendar.id}, function(res){
+						if (res.error){
+							toastr.error(res.error);
+							return;
+						}
+						toastr.success("Event was removed " + element.description);
 					});
 				}
 			}
@@ -99,6 +110,10 @@ function UpdateCalendar(calendar){
 
 function GetCalendars(user_email){
 	chrome.extension.sendRequest({action:"list"}, function(e){
+		if (e.error){
+			toastr.error(e.error);
+			return;
+		}
 		var calendar = null;
 		for (var i=0; i < e.items.length; i++){
 			//if (SUMMARY_KEY == e.items[i].summary){
@@ -116,6 +131,10 @@ function GetCalendars(user_email){
 }
 
 chrome.extension.sendRequest({action:"current_user"}, function(user){
+	if (user.error){
+		toastr.error(user.error);
+		return;
+	}
 	console.log("Welcome " + user.email);
 	GetCalendars(user.email);
 });

@@ -9,7 +9,7 @@ function listCalendars(request, sender, sendResponse){
    			if (xhr.status == 200 || xhr.status == 204){
    				sendResponse(JSON.parse(xhr.response));
    			}else{
-   				console.log('Failed');
+   				sendResponse({error: "Failed to list Calendar"});
    			}
    		}
    		try{
@@ -36,13 +36,13 @@ function createCalendar(request, sender, sendResponse){
    				if (xhr.status == 200 || xhr.status == 204){
    					sendResponse(JSON.parse(xhr.response));
    				}else{
-   					console.log('Failed');
+   					sendResponse({error: "Failed to create Calendar"});
    				}
    			}
    			try{
    				xhr.send(JSON.stringify(data));
    			}catch(err){
-   				console.log("Failed");
+   				sendResponse({error: "Failed to create Calendar"});
    			}
 		}
 		var url = "https://www.googleapis.com/calendar/v3/calendars";
@@ -57,19 +57,19 @@ function createCalendar(request, sender, sendResponse){
 			if (xhr.status == 200 || xhr.status == 204){
 				onCalendarCreated(JSON.parse(xhr.response));
 			}else{
-				console.log("Failed");
+				sendResponse({error: "Failed to create Calendar"});
 			}
 		}
 		try{
 			xhr.send(JSON.stringify(data));
 		}catch(err){
-			console.log("Failed");
+			sendResponse({error: "Failed to create Calendar"});
 		}
 	});
 }
 function listEvents(request, sender, sendResponse){
 	chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
-		var url = "https://www.googleapis.com/calendar/v3/calendars/"+ request.calendarId + "/events";
+		var url = "https://www.googleapis.com/calendar/v3/calendars/"+ request.calendarId + "/events?timeMin=" + encodeURIComponent(request.timeMin);
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", url)
 		xhr.setRequestHeader("Authorization", "Bearer " + token);
@@ -77,13 +77,13 @@ function listEvents(request, sender, sendResponse){
 			if (xhr.status == 200 || xhr.status == 204){
 				sendResponse(JSON.parse(xhr.response));
 			}else{
-				console.log('Failed');
+				sendResponse({error: "Failed to list Events"});
 			}
 		}
 		try{
 			xhr.send();
 		}catch(err){
-			console.log("Failed");
+			sendResponse({error: "Failed to list Events"});
 		}
 	});
 }
@@ -110,13 +110,13 @@ function createEvent(request, sender, sendResponse){
    			if (xhr.status == 200 || xhr.status == 204){
    				sendResponse(JSON.parse(xhr.response));
    			}else{
-   				console.log('Failed');
+   				sendResponse({error: "Failed to Create Event"});
    			}
    		}
    		try{
    			xhr.send(JSON.stringify(data));
    		}catch(err){
-   			console.log("Failed");
+   			sendResponse({error: "Failed to Create Calendar"});
    		}
 	});
 }
@@ -129,15 +129,15 @@ function deleteEvent(request, sender, sendResponse){
       xhr.setRequestHeader("Authorization", "Bearer " + token);
       xhr.onload = function(e){
          if (xhr.status == 200 || xhr.status == 204){
-            sendResponse(JSON.parse(xhr.response));
+            sendResponse({});
          }else{
-            console.log('Failed');
+            sendResponse({error: "Failed to delete Event"});
          }
       }
       try{
          xhr.send();
       }catch(err){
-         console.log("Failed");
+         sendResponse({error: "Failed to delete Event"});
       }
    });
 }
@@ -151,13 +151,13 @@ function getCurrentUser(sendResponse){
          if (xhr.status == 200 || xhr.status == 204){
             sendResponse(JSON.parse(xhr.response));
          }else{
-            console.log('Failed');
+            sendResponse({error: "Failed to retrieve user"});
          }
       }
       try{
          xhr.send();
       }catch(err){
-         console.log("Failed");
+         sendResponse({error: "Failed to retrieve current User"});
       }
    });
 }
