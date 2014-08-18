@@ -1,7 +1,7 @@
 {
   "name": "KiosqueADBToCalendar",
   "description": "Converti les demandes de congés ADB en Google Calendar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "permissions": [
     "identity", "tabs", "http://*/*", "https://*/*"
   ],
