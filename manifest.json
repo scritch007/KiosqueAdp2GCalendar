@@ -8,8 +8,8 @@
   "content_scripts":[
     {
       "matches": ["https://www.kiosque.adp.com/portail/krhv5/*"],
-      "js": ["recuperemesabsences.js", "bower_components/jquery/dist/jquery.min.js", "bower_components/toastr/toastr.js", "bower_components/jquery/dist/jquery.min.map"],
-      "css": ["bower_components/toastr/toastr.css"]
+      "js": ["recuperemesabsences.js", "bower_components/jquery/dist/jquery.min.js", "bower_components/toastr/toastr.min.js", "bower_components/jquery/dist/jquery.min.map"],
+      "css": ["bower_components/toastr/toastr.min.css"]
     }
   ],
   "background": {

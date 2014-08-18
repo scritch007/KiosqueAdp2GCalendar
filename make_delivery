@@ -1,5 +1,6 @@
 #!/bin/bash
 cp manifest.json manifest.save.json
 sed -i '/key/d' manifest.json
-zip KiosqueAdb2Calendar.zip -r . -x ".git/*" -x "make_delivery" -x "manifest.save.json" -x "KiosqueAdb2Calendar.zip" -x "bower.json"
+zip KiosqueAdb2Calendar.zip  -r . -x ".git/*" -x "make_delivery" -x "manifest.save.json" -x "KiosqueAdb2Calendar.zip" -x "bower.json" -x "bower_components/*"
+zip KiosqueAdb2Calendar.zip bower_components/jquery/dist/jquery.min.js bower_components/jquery/dist/jquery.min.map bower_components/toastr/toastr.min.js bower_components/toastr/toastr.min.css
 mv manifest.save.json manifest.json
