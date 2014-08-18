@@ -1,0 +1,3 @@
+#!/bin/bash
+
+zip KiosqueAdb2Calendar.zip -r . -x ".git/*" -x "make_delivery"
