@@ -1,14 +1,15 @@
 {
   "name": "KiosqueADBToCalendar",
   "description": "Converti les demandes de congés ADB en Google Calendar",
-  "version": "1.0",
+  "version": "1.0.2",
   "permissions": [
     "identity", "tabs", "http://*/*", "https://*/*"
   ],
   "content_scripts":[
     {
       "matches": ["https://www.kiosque.adp.com/portail/krhv5/*"],
-      "js": ["recuperemesabsences.js"]
+      "js": ["recuperemesabsences.js", "bower_components/jquery/dist/jquery.min.js", "bower_components/toastr/toastr.js", "bower_components/jquery/dist/jquery.min.map"],
+      "css": ["bower_components/toastr/toastr.css"]
     }
   ],
   "background": {
@@ -22,5 +23,6 @@
       "https://www.googleapis.com/auth/calendar"
     ]
   },
-  "manifest_version": 2
+  "manifest_version": 2,
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtgBF3VzvTSRf+MoWOQtSOL2iGr0P6VDXiyI50qm5IDU2VPuyNl4gH4NB/+KvWjI2QWw7eK4W9tbXeq+LOSzZ3OZtONT3TykSbdeZ4xAs4zHcp6o3Yt+uP1l02rbAfbaR+QGqoLv8wU9atNnsq2sfVxvLKVKjNDz1pw2hLTQ14dp9yvv5ZLrOPz09tpW5ONQACF32a/Vj0UlB9lrCfdW3vS+dZI9nb52Tls/n0Ac0GtGPLL+TvY3N0A4kObzzizP70JLgvh1wJK8t9jSFGxKUdBC6DV95huGiQwNK4sHPbSdrfu4msKhHi3Ef9JtFE7F4ZLzEux4QSMRXcSNIwea9ZQIDAQAB"
 }

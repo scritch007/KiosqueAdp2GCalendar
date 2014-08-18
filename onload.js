@@ -103,7 +103,8 @@ function createEvent(request, sender, sendResponse){
 				dateTime: request.event.start,
 				timeZone: "Europe/London"
 			},
-			summary: request.event.summary
+			summary: request.event.summary,
+         description: request.event.description
 		};
    		xhr.onload = function(e){
    			if (xhr.status == 200 || xhr.status == 204){
@@ -140,11 +141,33 @@ function deleteEvent(request, sender, sendResponse){
       }
    });
 }
+function getCurrentUser(sendResponse){
+   chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+      var url = "https://www.googleapis.com/oauth2/v2/userinfo";
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url);
+      xhr.setRequestHeader("Authorization", "Bearer " + token);
+      xhr.onload = function(e){
+         if (xhr.status == 200 || xhr.status == 204){
+            sendResponse(JSON.parse(xhr.response));
+         }else{
+            console.log('Failed');
+         }
+      }
+      try{
+         xhr.send();
+      }catch(err){
+         console.log("Failed");
+      }
+   });
+}
 
 window.addEventListener("load", function(){
 	chrome.extension.onRequest.addListener( function(request, sender, sendResponse) {
 
-		if (request.action == "list"){
+      if (request.action == "current_user"){
+         getCurrentUser(sendResponse);
+      }else if (request.action == "list"){
 			listCalendars(request, sender, sendResponse);
 	    }else if (request.action == "create"){
 	    	createCalendar(request, sender, sendResponse);

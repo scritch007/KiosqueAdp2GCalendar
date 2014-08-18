@@ -12,7 +12,7 @@ var elements = document.getElementsByClassName("liste liste_large")[1].childNode
 var absences = [];
 for (var i=1; i < elements.length; i++){
 	var absence = elements[i];
-	var accordee = absence.childNodes[6].innerHTML.contains("Accord");
+	var accordee = -1 != absence.childNodes[6].innerHTML.indexOf("Accord");
 	if (!accordee){
 		continue;
 	}
@@ -50,12 +50,13 @@ function UpdateCalendar(calendar){
 			var absence = absences[i];
 			var startDate = new Date(absence.start);
 			var stopDate  = new Date(absence.stop);
-			var summary = dateToYMD(startDate) + "=>" + dateToYMD(stopDate);
+			var description = "Holidays " + dateToYMD(startDate) + "=>" + dateToYMD(stopDate) + "#kiosqueAdp2Calendar";
+			var summary = "Out of the Office"
 			var exists = false;
 			for (var j=0; j < elements.items.length; j++){
-				if (summary == elements.items[j].summary)
+				if (description == elements.items[j].description)
 				{
-					console.log("Event already inserted");
+					toastr.info("Event already inserted");
 					elements.items[j].found = true;
 					exists = true;
 					break;
@@ -74,40 +75,47 @@ function UpdateCalendar(calendar){
 			var hEvent = {
 				summary: summary,
 				start: ISODateString(startDate),
-				stop: ISODateString(stopDate)
+				stop: ISODateString(stopDate),
+				description: description
 			}
 			chrome.extension.sendRequest({action: "create_event", event: hEvent, calendarId: calendar.id}, function(element){
-				console.log("Event created " + element);
+				toastr.success("Event created " + description);
 			});
 
 		}
 		for (var i=0; i < elements.items.length; i++){
-			if(!elements.items[i].found){
-				chrome.extension.sendRequest({action:"delete_event", eventId: elements.items[i].id, calendarId: calendar.id}, function(element){
-					console.log("Event was removed " + elements.items[i].id);
-				});
+			var element = elements.items[i]
+			if(!element.found){
+				if (-1 != element.summary.indexOf("kiosqueAdp2Calendar"))
+				{
+					chrome.extension.sendRequest({action:"delete_event", eventId: elements.items[i].id, calendarId: calendar.id}, function(element){
+						toastr.success("Event was removed " + elements.items[i].description);
+					});
+				}
 			}
 		}
 	});
 }
 
-chrome.extension.sendRequest({action:"list"}, function(e){
-	console.log("Got the following calendars ", e);
-	var calendar = null;
-	for (var i=0; i < e.items.length; i++){
-		if (SUMMARY_KEY == e.items[i].summary){
-			console.log("Found a matching calendar");
-			calendar = e.items[i];
-			break;
+function GetCalendars(user_email){
+	chrome.extension.sendRequest({action:"list"}, function(e){
+		var calendar = null;
+		for (var i=0; i < e.items.length; i++){
+			//if (SUMMARY_KEY == e.items[i].summary){
+			if (user_email == e.items[i].id){
+				calendar = e.items[i];
+				break;
+			}
 		}
-	}
-	if (null == calendar){
-		//TODO create a new calendar
-		console.log("No calendar found creating a new one ");
-		chrome.extension.sendRequest({action:"create", summary:"Calendar used to store holidays from kiosque adb", summary: SUMMARY_KEY}, function(e){
-			UpdateCalendar(e);
-		});
-	}else{
-		UpdateCalendar(calendar);
-	}
+		if (null == calendar){
+			toastr.error("Couldn't find calendar");
+		}else{
+			UpdateCalendar(calendar);
+		}
+	});
+}
+
+chrome.extension.sendRequest({action:"current_user"}, function(user){
+	console.log("Welcome " + user.email);
+	GetCalendars(user.email);
 });
