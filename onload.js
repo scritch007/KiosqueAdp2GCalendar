@@ -97,11 +97,11 @@ function createEvent(request, sender, sendResponse){
    		var data = {
 			end:{
 				dateTime: request.event.stop,
-				timeZone: "Europe/London"
+				timeZone: "Europe/Paris"
 			},
 			start:{
 				dateTime: request.event.start,
-				timeZone: "Europe/London"
+				timeZone: "Europe/Paris"
 			},
 			summary: request.event.summary,
          description: request.event.description
